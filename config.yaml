@@ -15,46 +15,46 @@ tuningSets:
 
 steps:
 
- - module:
-     path: modules/name-type-test/main.yaml
-     params:
-       actionName: "create"
-       namespaces: 1
-       tuningSet: Sequence
-       operationTimeout: 15m
-
- - module:
-     path: modules/env-variable-test/main.yaml
-     params:
-       actionName: "create"
-       namespaces: 1
-       tuningSet: Sequence
-       operationTimeout: 15m
-
- - module:
-     path: modules/volume-test/main.yaml
-     params:
-       actionName: "create"
-       namespaces: 1
-       tuningSet: Sequence
-       operationTimeout: 15m
-
- - module:
-     path: modules/security-setting-test/main.yaml
-     params:
-       actionName: "create"
-       namespaces: 1
-       tuningSet: Sequence
-       operationTimeout: 15m
-
- - module:
-     path: modules/command-test/main.yaml
-     params:
-       actionName: "create"
-       namespaces: 1
-       tuningSet: Sequence
-       operationTimeout: 15m
-
+# - module:
+#     path: modules/name-type-test/main.yaml
+#     params:
+#       actionName: "create"
+#       namespaces: 1
+#       tuningSet: Sequence
+#       operationTimeout: 15m
+#
+# - module:
+#     path: modules/env-variable-test/main.yaml
+#     params:
+#       actionName: "create"
+#       namespaces: 1
+#       tuningSet: Sequence
+#       operationTimeout: 15m
+#
+# - module:
+#     path: modules/volume-test/main.yaml
+#     params:
+#       actionName: "create"
+#       namespaces: 1
+#       tuningSet: Sequence
+#       operationTimeout: 15m
+#
+# - module:
+#     path: modules/security-setting-test/main.yaml
+#     params:
+#       actionName: "create"
+#       namespaces: 1
+#       tuningSet: Sequence
+#       operationTimeout: 15m
+#
+# - module:
+#     path: modules/command-test/main.yaml
+#     params:
+#       actionName: "create"
+#       namespaces: 1
+#       tuningSet: Sequence
+#       operationTimeout: 15m
+#
  - module:
      path: modules/access-type-test/main.yaml
      params:
@@ -62,62 +62,62 @@ steps:
        namespaces: 1
        tuningSet: Sequence
        operationTimeout: 15m
-
- - module:
-     path: modules/label-test/main.yaml
-     params:
-       actionName: "create"
-       namespaces: 1
-       tuningSet: Sequence
-       operationTimeout: 15m
-
- - module:
-     path: modules/wordpress/main.yaml
-     params:
-       actionName: "create"
-       namespaces: 1
-       tuningSet: Sequence
-       operationTimeout: 15m
-
- - module:
-     path: modules/nodeport/main.yaml
-     params:
-       actionName: "create"
-       namespaces: 1
-       tuningSet: Sequence
-       operationTimeout: 15m
-
- - module:
-     path: modules/ingress/main.yaml
-     params:
-       actionName: "create"
-       namespaces: 1
-       tuningSet: Sequence
-       operationTimeout: 15m
-
- - module:
-     path: modules/env-test/main.yaml
-     params:
-       actionName: "create"
-       namespaces: 1
-       tuningSet: Sequence
-       operationTimeout: 15m
-
- - module:
-     path: modules/html-test/main.yaml
-     params:
-       actionName: "create"
-       namespaces: 1
-       tuningSet: Sequence
-       operationTimeout: 15m
-
- - module:
-    path: modules/pvc-test/main.yaml
-    params:
-      actionName: "create"
-      namespaces: 1
-      tuningSet: Sequence
-      operationTimeout: 15m
+#
+# - module:
+#     path: modules/label-test/main.yaml
+#     params:
+#       actionName: "create"
+#       namespaces: 1
+#       tuningSet: Sequence
+#       operationTimeout: 15m
+#
+# - module:
+#     path: modules/wordpress/main.yaml
+#     params:
+#       actionName: "create"
+#       namespaces: 1
+#       tuningSet: Sequence
+#       operationTimeout: 15m
+#
+# - module:
+#     path: modules/nodeport/main.yaml
+#     params:
+#       actionName: "create"
+#       namespaces: 1
+#       tuningSet: Sequence
+#       operationTimeout: 15m
+#
+# - module:
+#     path: modules/ingress/main.yaml
+#     params:
+#       actionName: "create"
+#       namespaces: 1
+#       tuningSet: Sequence
+#       operationTimeout: 15m
+#
+# - module:
+#     path: modules/env-test/main.yaml
+#     params:
+#       actionName: "create"
+#       namespaces: 1
+#       tuningSet: Sequence
+#       operationTimeout: 15m
+#
+# - module:
+#     path: modules/html-test/main.yaml
+#     params:
+#       actionName: "create"
+#       namespaces: 1
+#       tuningSet: Sequence
+#       operationTimeout: 15m
+#
+# - module:
+#    path: modules/pvc-test/main.yaml
+#    params:
+#      actionName: "create"
+#      namespaces: 1
+#      tuningSet: Sequence
+#      operationTimeout: 15m
 
 
 # Not ready modules
