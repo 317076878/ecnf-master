@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    group: health-check-test
+  name: health-check-https-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      workload.es.io: deployment.health-check-https-deploy
+  template:
+    metadata:
+      annotations:
+        io.katacontainers.config.hypervisor.default_vcpus: '1'
+        ovn.kubernetes.io/logical_switch: ovn-default
+      creationTimestamp: null
+      labels:
+        workload.es.io: deployment.health-check-https-deploy
+        group: health-check-test
+    spec:
+      containers:
+        - image: 'hub.ecns.io/library/nginx:latest'
+          imagePullPolicy: IfNotPresent
+          name: health-check-https-deploy
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              host: 192.168.12.35
+              path: /mnt/
+              port: 30002
+              scheme: HTTPS
+            initialDelaySeconds: 180
+            periodSeconds: 20
+            successThreshold: 1
+            timeoutSeconds: 60
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              host: 192.168.12.37
+              path: /mnt/
+              port: 30005
+              scheme: HTTPS
+            initialDelaySeconds: 180
+            periodSeconds: 20
+            successThreshold: 1
+            timeoutSeconds: 60
+          startupProbe:
+            failureThreshold: 3
+            httpGet:
+              host: 192.168.12.39
+              path: /mnt/
+              port: 30008
+              scheme: HTTPS
+            initialDelaySeconds: 180
+            periodSeconds: 2
+            successThreshold: 1
+            timeoutSeconds: 60
+        
+

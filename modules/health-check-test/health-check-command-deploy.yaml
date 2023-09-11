@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    group: label-test
+    ABCDEFGHIJKLMNOPQRSTUVWXYZ-abcdefghijklmnopqrstuvwxyz_0.9.9.9.9: ABCDEFGHIJKLMNOPQRSTUVWXYZ-abcdefghijklmnopqrstuvwxyz_0.9.9.9.9
+    a: '1'
+    app: foo
+  name: labels-test-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      workload.es.io: deployment.labels-test-deploy
+  template:
+    metadata:
+      labels:
+        workload.es.io: deployment.labels-test-deploy
+        group: label-test
+    spec:
+      containers:
+        - image: 'hub.ecns.io/library/nginx:latest'
+          imagePullPolicy: IfNotPresent
+          name: labels-test-deploy
+        
+

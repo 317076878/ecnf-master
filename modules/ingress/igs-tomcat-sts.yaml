@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: igs-tomcat-sts
+  labels:
+    group: ingress
+spec:
+  selector:
+    matchLabels:
+      workload.es.io: statefulset.tomcat
+  template:
+    metadata:
+      labels:
+        workload.es.io: statefulset.tomcat
+        group: ingress
+    spec:
+      containers:
+        - image: 'hub.ecns.io/library/tomcat:latest'
+          name: tomcat
+          resources:
+            limits:
+              cpu: 250m
+              memory: 512Mi
+            requests:
+              cpu: 250m
+              memory: 512Mi

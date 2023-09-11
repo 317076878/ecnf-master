@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: igs-nginx-dpm
+  labels:
+    group: ingress
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      workload.es.io: deployment.nginx
+  template:
+    metadata:
+      labels:
+        workload.es.io: deployment.nginx
+        group: ingress
+    spec:
+      containers:
+      - image: 'hub.ecns.io/library/centos:alltools'
+        name: nginx

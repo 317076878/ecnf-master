@@ -1,0 +1,78 @@
+steps:
+
+- name: Starting measurement for nodeport application
+  measurements:
+  - Method: WaitForControlledPodsRunning
+    Instances:
+    - Identifier: WaitForRunningStatefulSets
+      Params:
+        apiVersion: apps/v1
+        kind: StatefulSet
+    - Identifier: WaitForRunningDeployments
+      Params:
+        apiVersion: apps/v1
+        kind: Deployment
+    - Identifier: WaitForRunningDaemonSet
+      Params:
+        apiVersion: apps/v1
+        kind: DaemonSet
+    Params:
+      action: start
+      labelSelector: group = nodeport
+      operationTimeout: "300s"
+
+- name: Create nginx service and deploy
+  phases:
+  - namespaceRange:
+      min: 1
+      max: 1
+    replicasPerNamespace: 1
+    tuningSet: {{.tuningSet}}
+    objectBundle:
+    - basename: nginx-svc
+      objectTemplatePath: modules/nodeport/nodeport-dpm-svc.yaml
+    - basename: nginx-deploy
+      objectTemplatePath: modules/nodeport/nodeport-dpm.yaml
+
+- name: Create httpd service and sts
+  phases:
+  - namespaceRange:
+      min: 1
+      max: 1
+    replicasPerNamespace: 1
+    tuningSet: {{.tuningSet}}
+    objectBundle:
+    - basename: httpd-svc
+      objectTemplatePath: modules/nodeport/nodeport-sts-svc.yaml
+    - basename: httpd-sts
+      objectTemplatePath: modules/nodeport/nodeport-sts.yaml
+
+- name: Create tomcat service and ds
+  phases:
+  - namespaceRange:
+      min: 1
+      max: 1
+    replicasPerNamespace: 1
+    tuningSet: {{.tuningSet}}
+    objectBundle:
+    - basename: tomcat-svc
+      objectTemplatePath: modules/nodeport/nodeport-ds-svc.yaml
+    - basename: tomcat-ds
+      objectTemplatePath: modules/nodeport/nodeport-ds.yaml
+
+- name: Waiting for nodeport application setup to be completed
+  measurements:
+  - Method: WaitForControlledPodsRunning
+    Instances:
+    - Identifier: WaitForRunningStatefulSets
+    - Identifier: WaitForRunningDeployments
+    - Identifier: WaitForRunningDaemonSet
+    Params:
+      action: gather
+
+# - name: Sleep
+#   measurements:
+#   - Identifier: WaitAfterExec
+#     Method: Sleep
+#     Params:
+#       duration: "1200s"

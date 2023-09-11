@@ -1,0 +1,44 @@
+steps:
+
+- name: Starting measurement for env-variable-test-deploy deployment
+  measurements:
+  - Method: WaitForControlledPodsRunning
+    Instances:
+    - Identifier: WaitForEnvVariableTestDeployments
+      Params:
+        apiVersion: apps/v1
+        kind: Deployment
+    Params:
+      action: start
+      labelSelector: group = env-variable-test
+      operationTimeout: "300s"
+
+- name: Create env-variable-test-deploy deployment
+  phases:
+  - namespaceRange:
+      min: 1
+      max: 1
+    replicasPerNamespace: 1
+    tuningSet: {{.tuningSet}}
+    objectBundle:
+    - basename: configmap1
+      objectTemplatePath: modules/env-variable-test/configmap1.yaml
+    - basename: configmap2
+      objectTemplatePath: modules/env-variable-test/configmap2.yaml
+    - basename: opaque-key
+      objectTemplatePath: modules/env-variable-test/opaque-key.yaml
+    - basename: tls-key
+      objectTemplatePath: modules/env-variable-test/tls-key.yaml
+    - basename: dockerconfigjson-key
+      objectTemplatePath: modules/env-variable-test/dockerconfigjson-key.yaml
+    - basename: env-variable-deploy
+      objectTemplatePath: modules/env-variable-test/env-variable-deploy.yaml
+
+- name: Waiting for env-variable-test-deploy application setup to be completed
+  measurements:
+  - Method: WaitForControlledPodsRunning
+    Instances:
+    - Identifier: WaitForEnvVariableTestDeployments
+    Params:
+      action: gather
+

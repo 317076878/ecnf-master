@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    group: command-test
+  name: command-deploy1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      workload.es.io: deployment.command-deploy1
+  template:
+    metadata:
+      labels:
+        workload.es.io: deployment.command-deploy1
+        group: command-test
+    spec:
+      containers:
+        - args:
+            - '-c'
+            - sleep 10
+          command:
+            - bash
+          image: 'hub.ecns.io/library/centos:alltools'
+          imagePullPolicy: IfNotPresent
+          name: command-deploy1

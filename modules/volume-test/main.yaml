@@ -1,0 +1,53 @@
+steps:
+
+- name: Starting measurement for volume-test-deploy deployment
+  measurements:
+  - Method: WaitForControlledPodsRunning
+    Instances:
+    - Identifier: WaitForVolumeTestDeployments
+      Params:
+        apiVersion: apps/v1
+        kind: Deployment
+    Params:
+      action: start
+      labelSelector: group = volume-test
+      operationTimeout: "300s"
+
+- name: Create volume-test-deploy PRE
+  phases:
+  - namespaceRange:
+      min: 1
+      max: 1
+    replicasPerNamespace: 1
+    tuningSet: {{.tuningSet}}
+    objectBundle:
+#    - basename: configmap1
+#      objectTemplatePath: modules/volume-test/configmap1.yaml
+#    - basename: configmap2
+#      objectTemplatePath: modules/volume-test/configmap2.yaml
+#    - basename: opaque-key
+#      objectTemplatePath: modules/volume-test/opaque-key.yaml
+#    - basename: dockerconfigjson-key
+#      objectTemplatePath: modules/volume-test/dockerconfigjson-key.yaml
+    - basename: volume-pvc
+      objectTemplatePath: modules/volume-test/volume-pvc.yaml
+      
+- name: Create volume-test-deploy
+  phases:
+  - namespaceRange:
+      min: 1
+      max: 1
+    replicasPerNamespace: 1
+    tuningSet: {{.tuningSet}}
+    objectBundle:
+    - basename: volume-deploy
+      objectTemplatePath: modules/volume-test/volume-deploy.yaml
+
+- name: Waiting for volume-test-deploy application setup to be completed
+  measurements:
+  - Method: WaitForControlledPodsRunning
+    Instances:
+    - Identifier: WaitForVolumeTestDeployments
+    Params:
+      action: gather
+

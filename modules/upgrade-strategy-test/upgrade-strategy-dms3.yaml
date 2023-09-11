@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels:
+    group: upgrade-strategy-test
+  name: upgrade-strategy-dms3
+spec:
+  selector:
+    matchLabels:
+      workload.es.io: daemonset.upgrade-strategy-dms3
+  template:
+    metadata:
+      labels:
+        workload.es.io: daemonset.upgrade-strategy-dms3
+    spec:
+      containers:
+        - image: 'hub.ecns.io/library/nginx:latest'
+          imagePullPolicy: IfNotPresent
+          name: upgrade-strategy-dms3
+  updateStrategy:
+    rollingUpdate:
+      maxUnavailable: 133
+    type: RollingUpdate

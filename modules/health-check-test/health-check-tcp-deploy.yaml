@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    group: health-check-test
+  name: health-check-tcp-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      workload.es.io: deployment.health-check-tcp-deploy
+  template:
+    metadata:
+      annotations:
+        io.katacontainers.config.hypervisor.default_vcpus: '1'
+        ovn.kubernetes.io/logical_switch: ovn-default
+      creationTimestamp: null
+      labels:
+        workload.es.io: deployment.health-check-tcp-deploy
+        group: health-check-test
+    spec:
+      containers:
+        - image: 'hub.ecns.io/library/nginx:latest'
+          imagePullPolicy: IfNotPresent
+          name: health-check-tcp-deploy
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 3600
+            periodSeconds: 180
+            successThreshold: 1
+            tcpSocket:
+              port: 30003
+            timeoutSeconds: 120
+          readinessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 3600
+            periodSeconds: 180
+            successThreshold: 1
+            tcpSocket:
+              port: 30003
+            timeoutSeconds: 120
+          startupProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 3600
+            periodSeconds: 180
+            successThreshold: 1
+            tcpSocket:
+              port: 30003
+            timeoutSeconds: 120
+        
+
+
+        
+

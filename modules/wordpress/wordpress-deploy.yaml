@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress
+  lables:
+    group: wordpress
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      workload.es.io: deployment.wordpress
+  template:
+    metadata:
+      labels:
+        workload.es.io: deployment.wordpress
+        group: wordpress
+    spec:
+      containers:
+        - env:
+            - name: WORDPRESS_DB_HOST
+              value: mariadb-svc
+            - name: WORDPRESS_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mariadb-secret
+                  key: mariadb-root-password
+            - name: WORDPRESS_DB_USER
+              value: root
+            - name: WORDPRESS_DEBUG
+              value: "1"
+          image: 'hub.ecns.io/library/wordpress:6.1.1-apache'
+          imagePullPolicy: IfNotPresent
+          name: wordpress
+          resources:
+            limits:
+              cpu: '2'
+              memory: 2Gi
+            requests:
+              cpu: '2'
+              memory: 2Gi
+          volumeMounts:
+            - mountPath: /var/www/html
+              name: wordpress-volume
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: wordpress-volume
+          persistentVolumeClaim:
+            claimName: wordpress-pvc

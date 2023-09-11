@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    group: volume-test
+  name: volume-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      workload.es.io: deployment.volume-deploy
+  template:
+    metadata:
+      labels:
+        workload.es.io: deployment.volume-deploy
+        group: volume-test
+    spec:
+      containers:
+        - image: 'hub.ecns.io/library/nginx:latest'
+          imagePullPolicy: IfNotPresent
+          name: volume-deploy
+          volumeMounts:
+            - mountPath: /mnt/t1
+              name: testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttes
+            - mountPath: /mnt/t2
+              name: test-1
+           # - mountPath: /mnt/t3
+           #   name: t
+           # - mountPath: /mnt/t5
+           #   name: test33
+           # - mountPath: /mnt/t6
+           #   name: test2
+      volumes:
+        - name: testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttes
+          persistentVolumeClaim:
+            claimName: volume-pvc
+        - emptyDir: {}
+          name: test-1
+       # - configMap:
+       #     name: test
+       #   name: t
+       # - name: test33
+       #   secret:
+       #     secretName: opaque-key
+       # - name: test2
+       #   secret:
+       #     items:
+       #       - key: .dockerconfigjson
+       #         path: .dockerconfigjson
+       #     secretName: dockerconfigjson-key

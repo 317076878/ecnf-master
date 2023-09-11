@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: clsip-tomcat-ds
+  labels:
+    group: cluster-ip
+spec:
+  selector:
+    matchLabels:
+      workload.es.io: daemonset.tomcat
+  template:
+    metadata:
+      labels:
+        workload.es.io: daemonset.tomcat
+        group: cluster-ip
+    spec:
+      containers:
+        - image: 'hub.ecns.io/library/tomcat:latest'
+          name: tomcat
+          resources:
+            limits:
+              cpu: 250m
+              memory: 512Mi
+              nvidia.com/gpu: '0'
+            requests:
+              cpu: 250m
+              memory: 512Mi
+              nvidia.com/gpu: '0'
+      nodeSelector:
+        secure-container: enabled

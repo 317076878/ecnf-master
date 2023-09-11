@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    group: security-setting-test
+  name: security-setting-deploy4
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      workload.es.io: deployment.security-setting-deploy4
+  template:
+    metadata:
+      labels:
+        workload.es.io: deployment.security-setting-deploy4
+        group: security-setting-test
+    spec:
+      containers:
+        - image: 'hub.ecns.io/library/centos:alltools'
+          imagePullPolicy: IfNotPresent
+          name: security-setting-deploy4
+          securityContext:
+            readOnlyRootFilesystem: true
+            runAsGroup: 100
+            runAsNonRoot: true
+            runAsUser: 100
+        
+
+
+        
+

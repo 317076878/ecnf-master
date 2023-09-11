@@ -1,0 +1,64 @@
+{{$C1_CpuRequest:= DefaultParam .C1_CpuRequest "250m"}}
+{{$C1_MemRequest:= DefaultParam .C1_MemRequest "512Mi"}}
+{{$C1_CpuLimit:= DefaultParam .C1_CpuLimit "250m"}}
+{{$C1_MemLimit:= DefaultParam .C1_MemLimit "512Mi"}}
+{{$C2_CpuRequest:= DefaultParam .C2_CpuRequest "1"}}
+{{$C2_MemRequest:= DefaultParam .C2_MemRequest "1024Mi"}}
+{{$C2_CpuLimit:= DefaultParam .C2_CpuLimit "1"}}
+{{$C2_MemLimit:= DefaultParam .C2_MemLimit "1024Mi"}}
+{{$C3_CpuRequest:= DefaultParam .C3_CpuRequest "2"}}
+{{$C3_MemRequest:= DefaultParam .C3_MemRequest "2048Mi"}}
+{{$C3_CpuLimit:= DefaultParam .C3_CpuLimit "4"}}
+{{$C3_MemLimit:= DefaultParam .C3_MemLimit "4096Mi"}}
+{{$GROUP_NAME:= DefaultParam .GROUP_NAME "resource-test"}}
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    group: {{$GROUP_NAME}}
+  name: resource-test-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      workload.es.io: deployment.resource-test-deploy
+  template:
+    metadata:
+      labels:
+        workload.es.io: deployment.resource-test-deploy
+        group: {{$GROUP_NAME}}
+    spec:
+      containers:
+        - image: 'hub.ecns.io/library/nginx:latest'
+          imagePullPolicy: IfNotPresent
+          name: resource-test-deploy1
+          resources:
+            limits:
+              cpu: {{$C1_CpuLimit}}
+              memory: {{$C1_MemLimit}}
+            requests:
+              cpu: {{$C1_CpuRequest}}
+              memory: {{$C1_MemRequest}}
+        - image: 'hub.ecns.io/library/nginx:latest'
+          imagePullPolicy: IfNotPresent
+          name: resource-test-deploy2
+          resources:
+            limits:
+              cpu: {{$C2_CpuLimit}}
+              memory: {{$C2_MemLimit}}
+            requests:
+              cpu: {{$C2_CpuRequest}}
+              memory: {{$C2_MemRequest}}
+        - image: 'hub.ecns.io/library/nginx:latest'
+          imagePullPolicy: IfNotPresent
+          name: resource-test-deploy3
+          resources:
+            limits:
+              cpu: {{$C3_CpuLimit}}
+              memory: {{$C3_MemLimit}}
+            requests:
+              cpu: {{$C3_CpuRequest}}
+              memory: {{$C3_MemRequest}}
+

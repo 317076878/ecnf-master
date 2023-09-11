@@ -1,0 +1,43 @@
+steps:
+
+- name: Starting measurement for scheduling-strategy-deploy workloads
+  measurements:
+  - Method: WaitForControlledPodsRunning
+    Instances:
+    - Identifier: WaitForSchedulingStrategyTestDeployments
+      Params:
+        apiVersion: apps/v1
+        kind: Deployment
+    Params:
+      action: start
+      labelSelector: group = scheduling-strategy-test
+      operationTimeout: "300s"
+
+- name: Create scheduling-strategy-deploy deployments
+  phases:
+  - namespaceRange:
+      min: 1
+      max: 1
+    replicasPerNamespace: 1
+    tuningSet: {{.tuningSet}}
+    objectBundle:
+    - basename: scheduling-strategy-deploy1
+      objectTemplatePath: modules/scheduling-strategy-test/scheduling-strategy-deploy1.yaml
+    - basename: scheduling-strategy-deploy2
+      objectTemplatePath: modules/scheduling-strategy-test/scheduling-strategy-deploy2.yaml
+    - basename: scheduling-strategy-deploy3
+      objectTemplatePath: modules/scheduling-strategy-test/scheduling-strategy-deploy3.yaml
+    - basename: scheduling-strategy-deploy4
+      objectTemplatePath: modules/scheduling-strategy-test/scheduling-strategy-deploy4.yaml
+    - basename: scheduling-strategy-deploy5
+      objectTemplatePath: modules/scheduling-strategy-test/scheduling-strategy-deploy5.yaml
+    - basename: scheduling-strategy-deploy6
+      objectTemplatePath: modules/scheduling-strategy-test/scheduling-strategy-deploy6.yaml
+
+- name: Waiting for scheduling-strategy-test workloads setup to be completed
+  measurements:
+  - Method: WaitForControlledPodsRunning
+    Instances:
+    - Identifier: WaitForSchedulingStrategyTestDeployments
+    Params:
+      action: gather

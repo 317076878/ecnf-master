@@ -1,0 +1,85 @@
+steps:
+
+- name: Starting measurement for upgrade-strategy-test workloads
+  measurements:
+  - Method: WaitForControlledPodsRunning
+    Instances:
+    - Identifier: WaitForRunningDeployments
+      Params:
+        apiVersion: apps/v1
+        kind: Deployment
+    - Identifier: WaitForRunningStatefulSets
+      Params:
+        apiVersion: apps/v1
+        kind: StatefulSet
+    - Identifier: WaitForRunningDaemonSets
+      Params:
+        apiVersion: apps/v1
+        kind: DaemonSet
+    Params:
+      action: start
+      labelSelector: group = upgrade-strategy-test
+      operationTimeout: "300s"
+
+- name: Create upgrade-strategy-deploy deployments
+  phases:
+  - namespaceRange:
+      min: 1
+      max: 1
+    replicasPerNamespace: 1
+    tuningSet: {{.tuningSet}}
+    objectBundle:
+    - basename: upgrade-strategy-deploy1
+      objectTemplatePath: modules/upgrade-strategy-test/upgrade-strategy-deploy1.yaml
+    - basename: upgrade-strategy-deploy2
+      objectTemplatePath: modules/upgrade-strategy-test/upgrade-strategy-deploy2.yaml
+    - basename: upgrade-strategy-deploy3
+      objectTemplatePath: modules/upgrade-strategy-test/upgrade-strategy-deploy3.yaml
+    - basename: upgrade-strategy-deploy4
+      objectTemplatePath: modules/upgrade-strategy-test/upgrade-strategy-deploy4.yaml
+    - basename: upgrade-strategy-deploy5
+      objectTemplatePath: modules/upgrade-strategy-test/upgrade-strategy-deploy5.yaml
+    - basename: upgrade-strategy-deploy6
+      objectTemplatePath: modules/upgrade-strategy-test/upgrade-strategy-deploy6.yaml
+    - basename: upgrade-strategy-deploy7
+      objectTemplatePath: modules/upgrade-strategy-test/upgrade-strategy-deploy7.yaml
+
+- name: Create upgrade-strategy-sts statefulsets
+  phases:
+  - namespaceRange:
+      min: 1
+      max: 1
+    replicasPerNamespace: 1
+    tuningSet: {{.tuningSet}}
+    objectBundle:
+    - basename: upgrade-strategy-sts1
+      objectTemplatePath: modules/upgrade-strategy-test/upgrade-strategy-sts1.yaml
+    - basename: upgrade-strategy-sts2
+      objectTemplatePath: modules/upgrade-strategy-test/upgrade-strategy-sts2.yaml
+
+- name: Create upgrade-strategy-dms daemonsets
+  phases:
+  - namespaceRange:
+      min: 1
+      max: 1
+    replicasPerNamespace: 1
+    tuningSet: {{.tuningSet}}
+    objectBundle:
+    - basename: upgrade-strategy-dms1
+      objectTemplatePath: modules/upgrade-strategy-test/upgrade-strategy-dms1.yaml
+    - basename: upgrade-strategy-dms2
+      objectTemplatePath: modules/upgrade-strategy-test/upgrade-strategy-dms2.yaml
+    - basename: upgrade-strategy-dms3
+      objectTemplatePath: modules/upgrade-strategy-test/upgrade-strategy-dms3.yaml
+    - basename: upgrade-strategy-dms4
+      objectTemplatePath: modules/upgrade-strategy-test/upgrade-strategy-dms4.yaml
+
+- name: Waiting for nginx-deploy upgrade-strategy-test workloads setup to be completed
+  measurements:
+  - Method: WaitForControlledPodsRunning
+    Instances:
+    - Identifier: WaitForRunningDeployments
+    - Identifier: WaitForRunningStatefulSets
+    - Identifier: WaitForRunningDaemonSets
+    Params:
+      action: gather

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: igs-tomcat-svc
+  annotations:
+    ovn.kubernetes.io/vpc: ovn-cluster
+    workload.es.io/kind: statefulset
+    workload.es.io/name: tomcat-sts
+spec:
+  selector:
+    workload.es.io: statefulset.tomcat
+  ports:
+    - protocol: TCP
+      port: 8082
+      targetPort: 8080
+  type: ClusterIP

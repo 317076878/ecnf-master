@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    group: scheduling-strategy-test
+  name: scheduling-strategy-deploy5
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      workload.es.io: deployment.scheduling-strategy-deploy5
+  template:
+    metadata:
+      labels:
+        workload.es.io: deployment.scheduling-strategy-deploy5
+        group: scheduling-strategy-test
+    spec:
+      containers:
+        - image: 'hub.ecns.io/library/nginx:latest'
+          imagePullPolicy: IfNotPresent
+          name: scheduling-strategy-deploy5
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: test-1
+                    operator: In
+                    values:
+                      - '5'
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: pod-2
+                      operator: NotIn
+                      values:
+                        - node-2
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector: {}
+              topologyKey: kubernetes.io/hostname
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: pod-b
+                    operator: NotIn
+                    values:
+                      - work-2
+              topologyKey: kubernetes.io/hostname
+        
+

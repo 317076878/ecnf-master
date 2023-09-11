@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    group: command-test
+  name: command-deploy2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      workload.es.io: deployment.command-deploy2
+  template:
+    metadata:
+      labels:
+        workload.es.io: deployment.command-deploy2
+        group: command-test
+    spec:
+      containers:
+        - image: 'hub.ecns.io/library/centos:alltools'
+          imagePullPolicy: IfNotPresent
+          name: command-deploy2
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - bash
+                  - '-c'
+                  - echo Running

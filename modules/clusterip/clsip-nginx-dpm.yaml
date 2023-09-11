@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clsip-nginx-dpm
+  labels:
+    group: cluster-ip
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      workload.es.io: deployment.nginx
+  template:
+    metadata:
+      labels:
+        workload.es.io: deployment.nginx
+        group: cluster-ip
+    spec:
+      containers:
+      - image: 'hub.ecns.io/library/nginx:latest'
+        name: nginx

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: envtest-dpm
+  labels:
+    group: nginx-env
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      workload.es.io: deployment.nginx
+  template:
+    metadata:
+      labels:
+        workload.es.io: deployment.nginx
+        group: nginx-env
+    spec:
+      containers:
+        - env:
+            - name: VERSION
+              valueFrom:
+                configMapKeyRef:
+                  key: VERSION
+                  name: envtest-configmap
+          image: 'hub.ecns.io/library/centos:alltools'
+          name: nginx
+
+

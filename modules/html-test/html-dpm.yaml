@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: html-dpm
+  labels:
+    group: nginx-html
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      workload.es.io: deployment.nginx
+  template:
+    metadata:
+      labels:
+        workload.es.io: deployment.nginx
+        group: nginx-html
+    spec:
+      containers:
+        - image: 'nginx:latest'
+          name: nginx
+          volumeMounts:
+            - mountPath: /usr/share/nginx/html
+              name: vol1
+      volumes:
+        - configMap:
+            defaultMode: 420
+            name: html-configmap
+          name: vol1
+
+

@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    group: scheduling-strategy-test
+  name: scheduling-strategy-deploy2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      workload.es.io: deployment.scheduling-strategy-deploy2
+  template:
+    metadata:
+      labels:
+        workload.es.io: deployment.scheduling-strategy-deploy2
+        group: scheduling-strategy-test
+    spec:
+      containers:
+        - image: 'hub.ecns.io/library/nginx:latest'
+          imagePullPolicy: IfNotPresent
+          name: scheduling-strategy-deploy2
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - preference:
+                matchExpressions:
+                  - key: test-2
+                    operator: NotIn
+                    values:
+                      - '1'
+              weight: 1
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: pod-3
+                    operator: Exists
+              topologyKey: kubernetes.io/hostname
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: pod-c
+                      operator: Exists
+                topologyKey: kubernetes.io/hostname
+              weight: 100
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector: {}
+              topologyKey: kubernetes.io/hostname
+        
+

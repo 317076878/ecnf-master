@@ -1,0 +1,52 @@
+steps:
+
+- name: Starting measurement for nginx-env application
+  measurements:
+  - Method: WaitForControlledPodsRunning
+    Instances:
+    - Identifier: WaitForRunningDeployments
+      Params:
+        apiVersion: apps/v1
+        kind: Deployment
+    Params:
+      action: start
+      labelSelector: group = nginx-env
+      operationTimeout: "300s"
+
+- name: Create configmap
+  phases:
+  - namespaceRange:
+      min: 1
+      max: 1
+    replicasPerNamespace: 1
+    tuningSet: {{.tuningSet}}
+    objectBundle:
+    - basename: nginx-configmap
+      objectTemplatePath: modules/env-test/envtest-configmap.yaml
+
+- name: Create nginx-env deploy
+  phases:
+  - namespaceRange:
+      min: 1
+      max: 1
+    replicasPerNamespace: 1
+    tuningSet: {{.tuningSet}}
+    objectBundle:
+    - basename: nginx-deploy
+      objectTemplatePath: modules/env-test/envtest-dpm.yaml
+
+
+- name: Waiting for nginx-env application setup to be completed
+  measurements:
+  - Method: WaitForControlledPodsRunning
+    Instances:
+    - Identifier: WaitForRunningDeployments
+    Params:
+      action: gather
+
+# - name: Sleep
+#   measurements:
+#   - Identifier: WaitAfterExec
+#     Method: Sleep
+#     Params:
+#     duration: "1200s"

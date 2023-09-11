@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    group: upgrade-strategy-test
+  name: upgrade-strategy-deploy6
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      workload.es.io: deployment.upgrade-strategy-deploy6
+  strategy:
+    rollingUpdate:
+      maxSurge: 300
+      maxUnavailable: 300
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        workload.es.io: deployment.upgrade-strategy-deploy6
+        group: upgrade-strategy-test
+    spec:
+      containers:
+        - image: 'hub.ecns.io/library/nginx:latest'
+          imagePullPolicy: IfNotPresent
+          name: upgrade-strategy-deploy6
+        
+

@@ -1,0 +1,60 @@
+steps:
+
+- name: Starting measurement for ingress application
+  measurements:
+  - Method: WaitForControlledPodsRunning
+    Instances:
+    - Identifier: WaitForRunningStatefulSets
+      Params:
+        apiVersion: apps/v1
+        kind: StatefulSet
+    - Identifier: WaitForRunningDeployments
+      Params:
+        apiVersion: apps/v1
+        kind: Deployment
+    Params:
+      action: start
+      labelSelector: group = ingress
+      operationTimeout: "300s"
+
+- name: Create nginx service and deploy
+  phases:
+  - namespaceRange:
+      min: 1
+      max: 1
+    replicasPerNamespace: 1
+    tuningSet: {{.tuningSet}}
+    objectBundle:
+    - basename: nginx-svc
+      objectTemplatePath: modules/ingress/igs-nginx-svc.yaml
+    - basename: nginx-deploy
+      objectTemplatePath: modules/ingress/igs-nginx-dpm.yaml
+
+- name: Create tomcat service and ds
+  phases:
+  - namespaceRange:
+      min: 1
+      max: 1
+    replicasPerNamespace: 1
+    tuningSet: {{.tuningSet}}
+    objectBundle:
+    - basename: tomcat-svc
+      objectTemplatePath: modules/ingress/igs-tomcat-svc.yaml
+    - basename: tomcat-sts
+      objectTemplatePath: modules/ingress/igs-tomcat-sts.yaml
+
+- name: Waiting for ingress application setup to be completed
+  measurements:
+  - Method: WaitForControlledPodsRunning
+    Instances:
+    - Identifier: WaitForRunningStatefulSets
+    - Identifier: WaitForRunningDeployments
+    Params:
+      action: gather
+
+# - name: Sleep
+#   measurements:
+#   - Identifier: WaitAfterExec
+#     Method: Sleep
+#     Params:
+#     duration: "1200s"

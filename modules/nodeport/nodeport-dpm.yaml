@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodeport-dpm
+  labels:
+    group: nodeport
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      workload.es.io: deployment.nodeport
+  template:
+    metadata:
+      labels:
+        workload.es.io: deployment.nodeport
+        group: nodeport
+    spec:
+      containers:
+      - image: 'hub.ecns.io/library/nginx:latest'
+        name: nginx

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    group: access-type-test
+  name: nodeport-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      workload.es.io: deployment.nodeport-deploy
+  template:
+    metadata:
+      labels:
+        workload.es.io: deployment.nodeport-deploy
+        group: access-type-test
+    spec:
+      containers:
+        - image: 'hub.ecns.io/library/centos:alltools'
+          imagePullPolicy: IfNotPresent
+          name: nodeport-deploy

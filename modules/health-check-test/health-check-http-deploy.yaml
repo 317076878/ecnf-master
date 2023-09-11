@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    group: health-check-test
+  name: health-check-http-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      workload.es.io: deployment.health-check-http-deploy
+  template:
+    metadata:
+      labels:
+        workload.es.io: deployment.health-check-http-deploy
+        group: health-check-test
+    spec:
+      containers:
+        - image: 'hub.ecns.io/library/nginx:latest'
+          imagePullPolicy: IfNotPresent
+          name: health-check-http-deploy
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              host: 192.168.12.34
+              path: /mnt/
+              port: 30001
+              scheme: HTTP
+            initialDelaySeconds: 120
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 60
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              host: 192.168.12.36
+              path: /mnt/
+              port: 30004
+              scheme: HTTP
+            initialDelaySeconds: 120
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 60
+          startupProbe:
+            failureThreshold: 3
+            httpGet:
+              host: 192.168.12.38
+              path: /mnt/
+              port: 30007
+              scheme: HTTP
+            initialDelaySeconds: 120
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 60
+        
+

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodeport-ds-svc
+  annotations:
+    ovn.kubernetes.io/vpc: ovn-cluster
+    workload.es.io/kind: daemonset
+    workload.es.io/name: nodeport-ds
+spec:
+  selector:
+    workload.es.io: daemonset.nodeport
+  ports:
+    - nodePort: 30889
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  type: NodePort

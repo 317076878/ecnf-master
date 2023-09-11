@@ -1,0 +1,82 @@
+steps:
+
+- name: Starting measurement for wordpress application
+  measurements:
+  - Method: WaitForControlledPodsRunning
+    Instances:
+    - Identifier: WaitForWordpressStatefulSets
+      Params:
+        apiVersion: apps/v1
+        kind: StatefulSet
+    - Identifier: WaitForWordpressDeployments
+      Params:
+        apiVersion: apps/v1
+        kind: Deployment
+    Params:
+      action: start
+      labelSelector: group = wordpress
+      operationTimeout: "120s"
+
+- name: Create secret
+  phases:
+  - namespaceRange:
+      min: 1
+      max: 1
+    replicasPerNamespace: 1
+    tuningSet: {{.tuningSet}}
+    objectBundle:
+    - basename: mariadb-secret
+      objectTemplatePath: modules/wordpress/mariadb-secret.yaml
+
+- name: Create mysql service and statefulset
+  phases:
+  - namespaceRange:
+      min: 1
+      max: 1
+    replicasPerNamespace: 1
+    tuningSet: {{.tuningSet}}
+    objectBundle:
+    - basename: mariadb-svc
+      objectTemplatePath: modules/wordpress/mariadb-svc.yaml
+    - basename: mariadb-sts
+      objectTemplatePath: modules/wordpress/mariadb-sts.yaml
+
+- name: Create wordpress pvc
+  phases:
+  - namespaceRange:
+      min: 1
+      max: 1
+    replicasPerNamespace: 1
+    tuningSet: {{.tuningSet}}
+    objectBundle:
+    - basename: wordpress-pvc
+      objectTemplatePath: modules/wordpress/wordpress-pvc.yaml
+
+- name: Create workpress service and deploy
+  phases:
+  - namespaceRange:
+      min: 1
+      max: 1
+    replicasPerNamespace: 1
+    tuningSet: {{.tuningSet}}
+    objectBundle:
+    - basename: wordpress-svc
+      objectTemplatePath: modules/wordpress/wordpress-svc.yaml
+    - basename: wordpress-deploy
+      objectTemplatePath: modules/wordpress/wordpress-deploy.yaml
+
+- name: Waiting for wordpress application setup to be completed
+  measurements:
+  - Method: WaitForControlledPodsRunning
+    Instances:
+    - Identifier: WaitForWordpressStatefulSets
+    - Identifier: WaitForWordpressDeployments
+    Params:
+      action: gather
+
+# - name: Sleep
+#   measurements:
+#   - Identifier: WaitAfterExec
+#     Method: Sleep
+#     Params:
+#       duration: "1200s"
