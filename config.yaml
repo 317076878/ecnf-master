@@ -15,13 +15,13 @@ tuningSets:
 
 steps:
 
-# - module:
-#     path: modules/name-type-test/main.yaml
-#     params:
-#       actionName: "create"
-#       namespaces: 1
-#       tuningSet: Sequence
-#       operationTimeout: 15m
+ - module:
+     path: modules/name-type-test/main.yaml
+     params:
+       actionName: "create"
+       namespaces: 1
+       tuningSet: Sequence
+       operationTimeout: 15m
 #
 # - module:
 #     path: modules/env-variable-test/main.yaml
