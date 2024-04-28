@@ -15,7 +15,7 @@ spec:
         group: nodeport
     spec:
       containers:
-        - image: 'hub.ecns.io/library/tomcat:latest'
+        - image: 'tomcat:latest'
           name: tomcat
           resources:
             limits:

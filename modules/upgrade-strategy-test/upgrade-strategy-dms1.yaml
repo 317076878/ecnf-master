@@ -14,7 +14,7 @@ spec:
         workload.es.io: daemonset.upgrade-strategy-dms1
     spec:
       containers:
-        - image: 'hub.ecns.io/library/nginx:latest'
+        - image: 'nginx:latest'
           imagePullPolicy: IfNotPresent
           name: upgrade-strategy-dms1
   updateStrategy:

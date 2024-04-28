@@ -21,14 +21,14 @@ spec:
         group: {{$GROUP_NAME}}
     spec:
       containers:
-        - image: 'hub.ecns.io/library/nginx:latest'
+        - image: 'nginx:latest'
           imagePullPolicy: IfNotPresent
           name: {{$BUSINESS_CONTAINER_NAME}}
       initContainers:
         - command:
             - echo
             - hello world
-          image: 'hub.ecns.io/library/nginx:latest'
+          image: 'nginx:latest'
           imagePullPolicy: IfNotPresent
           name: {{$INIT_CONTAINER_NAME}}
         

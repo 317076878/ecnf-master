@@ -31,7 +31,7 @@ spec:
         group: {{$GROUP_NAME}}
     spec:
       containers:
-        - image: 'hub.ecns.io/library/nginx:latest'
+        - image: 'nginx:latest'
           imagePullPolicy: IfNotPresent
           name: resource-test-deploy1
           resources:
@@ -41,7 +41,7 @@ spec:
             requests:
               cpu: {{$C1_CpuRequest}}
               memory: {{$C1_MemRequest}}
-        - image: 'hub.ecns.io/library/nginx:latest'
+        - image: 'nginx:latest'
           imagePullPolicy: IfNotPresent
           name: resource-test-deploy2
           resources:
@@ -51,7 +51,7 @@ spec:
             requests:
               cpu: {{$C2_CpuRequest}}
               memory: {{$C2_MemRequest}}
-        - image: 'hub.ecns.io/library/nginx:latest'
+        - image: 'nginx:latest'
           imagePullPolicy: IfNotPresent
           name: resource-test-deploy3
           resources:

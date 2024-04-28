@@ -23,7 +23,7 @@ spec:
         workload.es.io: deployment.labels-test-deploy
     spec:
       containers:
-        - image: 'hub.ecns.io/library/centos:alltools'
+        - image: 'centos:latest'
           imagePullPolicy: IfNotPresent
           name: labels-test-deploy
           resources:

@@ -16,7 +16,7 @@ spec:
         group: security-setting-test
     spec:
       containers:
-        - image: 'hub.ecns.io/library/centos:alltools'
+        - image: 'centos:latest'
           imagePullPolicy: IfNotPresent
           name: security-setting-deploy4
           securityContext:

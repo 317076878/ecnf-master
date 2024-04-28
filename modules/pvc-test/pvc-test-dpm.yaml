@@ -16,7 +16,7 @@ spec:
         group: nginx-pvc
     spec:
       containers:
-        - image: 'hub.ecns.io/library/nginx:latest'
+        - image: 'nginx:latest'
           name: nginx
           volumeMounts:
             - mountPath: /data

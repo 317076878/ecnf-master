@@ -16,6 +16,6 @@ spec:
         group: access-type-test
     spec:
       containers:
-        - image: 'hub.ecns.io/library/centos:alltools'
+        - image: 'centos:latest'
           imagePullPolicy: IfNotPresent
           name: nodeport-deploy

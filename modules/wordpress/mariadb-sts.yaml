@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: mariadb
-        image: 'hub.ecns.io/library/mariadb:latest'
+        image: 'mariadb:latest'
         imagePullPolicy: IfNotPresent
         resources:
           limits:

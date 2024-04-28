@@ -16,7 +16,7 @@ spec:
         group: nodeport
     spec:
       containers:
-        - image: 'hub.ecns.io/library/httpd:latest'
+        - image: 'httpd:latest'
           name: httpd
           resources:
             limits:

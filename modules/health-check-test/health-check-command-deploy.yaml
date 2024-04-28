@@ -19,7 +19,7 @@ spec:
         group: label-test
     spec:
       containers:
-        - image: 'hub.ecns.io/library/nginx:latest'
+        - image: 'nginx:latest'
           imagePullPolicy: IfNotPresent
           name: labels-test-deploy
         

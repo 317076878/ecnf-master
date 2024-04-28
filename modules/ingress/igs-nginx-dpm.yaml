@@ -16,5 +16,5 @@ spec:
         group: ingress
     spec:
       containers:
-      - image: 'hub.ecns.io/library/centos:alltools'
+      - image: 'centos:latest'
         name: nginx

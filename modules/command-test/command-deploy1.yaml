@@ -21,6 +21,6 @@ spec:
             - sleep 10
           command:
             - bash
-          image: 'hub.ecns.io/library/centos:alltools'
+          image: 'centos:latest'
           imagePullPolicy: IfNotPresent
           name: command-deploy1

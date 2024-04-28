@@ -16,7 +16,7 @@ spec:
         group: scheduling-strategy-test
     spec:
       containers:
-        - image: 'hub.ecns.io/library/nginx:latest'
+        - image: 'nginx:latest'
           imagePullPolicy: IfNotPresent
           name: scheduling-strategy-deploy5
       affinity:

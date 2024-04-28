@@ -16,7 +16,7 @@ spec:
         group: volume-test
     spec:
       containers:
-        - image: 'hub.ecns.io/library/nginx:latest'
+        - image: 'nginx:latest'
           imagePullPolicy: IfNotPresent
           name: volume-deploy
           volumeMounts:

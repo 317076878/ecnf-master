@@ -28,7 +28,7 @@ spec:
               value: root
             - name: WORDPRESS_DEBUG
               value: "1"
-          image: 'hub.ecns.io/library/wordpress:6.1.1-apache'
+          image: 'wordpress:6.1.1-apache'
           imagePullPolicy: IfNotPresent
           name: wordpress
           resources:

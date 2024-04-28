@@ -16,5 +16,5 @@ spec:
         group: cluster-ip
     spec:
       containers:
-      - image: 'hub.ecns.io/library/nginx:latest'
+      - image: 'nginx:latest'
         name: nginx

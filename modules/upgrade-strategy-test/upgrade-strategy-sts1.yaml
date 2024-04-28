@@ -15,7 +15,7 @@ spec:
         workload.es.io: statefulset.upgrade-strategy-sts1
     spec:
       containers:
-        - image: 'hub.ecns.io/library/nginx:latest'
+        - image: 'nginx:latest'
           imagePullPolicy: IfNotPresent
           name: upgrade-strategy-sts1
   updateStrategy:
