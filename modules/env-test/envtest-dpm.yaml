@@ -22,7 +22,7 @@ spec:
                 configMapKeyRef:
                   key: VERSION
                   name: envtest-configmap
-          image: 'hub.ecns.io/library/centos:alltools'
+          image: 'hub.ecns.io/library/nginx:latest'
           name: nginx
 
 

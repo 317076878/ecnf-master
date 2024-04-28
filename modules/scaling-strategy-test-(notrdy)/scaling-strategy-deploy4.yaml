@@ -8,16 +8,16 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      workload.es.io: deployment.scaling-strategy-deploy1
+      workload.es.io: deployment.scaling-strategy-deploy4
   template:
     metadata:
       labels:
-        workload.es.io: deployment.scaling-strategy-deploy1
+        workload.es.io: deployment.scaling-strategy-deploy4
         group: upgrade-strategy-test
     spec:
       containers:
         - image: 'hub.ecns.io/library/nginx:latest'
           imagePullPolicy: IfNotPresent
-          name: scaling-strategy-deploy1
+          name: scaling-strategy-deploy4
         
 

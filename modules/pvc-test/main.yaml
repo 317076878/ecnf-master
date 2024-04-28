@@ -21,7 +21,7 @@ steps:
     replicasPerNamespace: 1
     tuningSet: {{.tuningSet}}
     objectBundle:
-    - basename: pvc-nginx
+    - basename: pvc-test
       objectTemplatePath: modules/pvc-test/pvc-test.yaml
 
 - name: Create pvc-test deploy

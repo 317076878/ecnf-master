@@ -16,7 +16,7 @@ spec:
         group: nginx-html
     spec:
       containers:
-        - image: 'nginx:latest'
+        - image: 'hub.ecns.io/library/nginx:latest'
           name: nginx
           volumeMounts:
             - mountPath: /usr/share/nginx/html

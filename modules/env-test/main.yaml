@@ -21,7 +21,7 @@ steps:
     replicasPerNamespace: 1
     tuningSet: {{.tuningSet}}
     objectBundle:
-    - basename: nginx-configmap
+    - basename: envtest-configmap
       objectTemplatePath: modules/env-test/envtest-configmap.yaml
 
 - name: Create nginx-env deploy
